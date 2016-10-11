@@ -25,6 +25,44 @@ Calculator.prototype.pingPong = function(goal) {
 exports.calculatorModule = Calculator;
 
 },{}],3:[function(require,module,exports){
+// var apiKey = require('./../.env').apiKey;
+//
+// function Weather(){
+// }
+//
+// Weather.prototype.getWeather = function(city) {
+//   $.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey).then(function(response) {
+//     $('.showWeather').text("The humidity in " + city + " is " + response.main.humidity + "%");
+//   }).fail(function(error) {
+//     $('.showWeather').text(error.responseJSON.message);
+//
+//
+//   $.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey).then(function(response) {
+//     $('.showWeather').append("with a wind speed of " + response.wind.speed + "MPH");
+//   }).fail(function(error){
+//     $('.showWeather').text(error.responseJSON.message);
+//   });
+// });
+// };
+//
+// exports.weatherModule = Weather;
+var apiKey = require('./../.env').apiKey;
+
+Weather = function(){
+}
+
+Weather.prototype.getWeather = function(city) {
+  $.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey).then(function(response) {
+    console.log(response.main.humidity);
+    return response.main.humidity;
+  }).fail(function(error) {
+    $('.showWeather').text(error.responseJSON.message);
+  });
+}
+
+exports.weatherModule = Weather;
+
+},{"./../.env":1}],4:[function(require,module,exports){
 var Calculator = require('./../js/pingpong.js').calculatorModule;
 
 $(document).ready(function() {
@@ -54,24 +92,28 @@ $(document).ready(function(){
   }, 1000);
 });
 
-var apiKey = require('./../.env').apiKey;
+// var Weather = require('./../js/weather.js').weatherModule;
+//
+// $(document).ready(function() {
+//   var currentWeatherObject = new Weather();
+//   $('#weatherLocation').click(function() {
+//     var city = $('#location').val();
+//     $('#location').val("");
+//     currentWeatherObject.getWeather(city);
+//   });
+// });
+
+var Weather = require('./../js/weather.js').weatherModule;
 
 $(document).ready(function() {
+  var currentWeatherObject = new Weather();
   $('#weatherLocation').click(function() {
     var city = $('#location').val();
     $('#location').val("");
-    $.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey, function(response) {
-      $('.showWeather').text("The weather in " + city + " is " + response.weather.description + ", ");
-        // "The wind speed is " + response.wind.speed + "MPH"<br>
-
-    $.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey, function(response) {
-      $('.showWeather').append("with a wind speed of " + response.wind.speed + "MPH");
-
-        // "The cloud cover is " + response.clouds.all + "%"<br>
-
-      });
-    });
+    var humidity = currentWeatherObject.getWeather(city);
+    $('.showWeather').text("The humidity in " + city + " is " + humidity + "%");
+    console.log(humidity);
   });
 });
 
-},{"./../.env":1,"./../js/pingpong.js":2}]},{},[3]);
+},{"./../js/pingpong.js":2,"./../js/weather.js":3}]},{},[4]);
