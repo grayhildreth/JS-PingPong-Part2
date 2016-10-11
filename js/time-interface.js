@@ -1,3 +1,5 @@
 $(document).ready(function(){
-  $('#time').text(moment());
+  window.setInterval(function(){
+    $('#time').text(moment());
+  }, 1000);
 });
