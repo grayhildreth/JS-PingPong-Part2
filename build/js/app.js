@@ -1,4 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+exports.apiKey = "5c9579248a48adf072eb05c27ccdf664";
+
+},{}],2:[function(require,module,exports){
 function Calculator(skinName) {
   this.skin = skinName;
 }
@@ -21,7 +24,7 @@ Calculator.prototype.pingPong = function(goal) {
 
 exports.calculatorModule = Calculator;
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 var Calculator = require('./../js/pingpong.js').calculatorModule;
 
 $(document).ready(function() {
@@ -51,19 +54,24 @@ $(document).ready(function(){
   }, 1000);
 });
 
-var apiKey = "5c9579248a48adf072eb05c27ccdf664";
+var apiKey = require('./../.env').apiKey;
 
 $(document).ready(function() {
   $('#weatherLocation').click(function() {
     var city = $('#location').val();
     $('#location').val("");
     $.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey, function(response) {
-      $('.showWeather').text("The weather in " + city + " is " + response.weather.description + ".");
+      $('.showWeather').text("The weather in " + city + " is " + response.weather.description + ", ");
         // "The wind speed is " + response.wind.speed + "MPH"<br>
+
+    $.get('http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + apiKey, function(response) {
+      $('.showWeather').append("with a wind speed of " + response.wind.speed + "MPH");
+
         // "The cloud cover is " + response.clouds.all + "%"<br>
 
+      });
     });
   });
 });
 
-},{"./../js/pingpong.js":1}]},{},[2]);
+},{"./../.env":1,"./../js/pingpong.js":2}]},{},[3]);
